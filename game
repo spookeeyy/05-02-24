@@ -51,7 +51,7 @@ while lives > 0:
     elif who_what == 2:
         print("a bear,", end="")
         if not bear_met:
-            while True:
+            while not bear_met:  # Küsitakse seni, kuni kohtutakse karuga või otsustatakse lahkuda
                 action = input(" Do you want to approach the bear or leave? (approach/leave)")
                 if action == "approach":
                     bear_met = True
@@ -102,7 +102,6 @@ while lives > 0:
     if text == "leave":
         print("You left the forest, escaping all dangers.")
         break
-
 
 if coins < win_amount and text != "leave":
     print("""You died.
