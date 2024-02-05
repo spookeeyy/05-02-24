@@ -1,0 +1,57 @@
+from tkinter import *
+from math import *
+import time
+
+raam = Tk()
+raam.title("Kell")
+
+# tahvli laius ja pikkus
+w = 500
+h = 500
+
+tahvel = Canvas(raam, width=w, height=h, bg="white")
+
+# kella raam
+tahvel.create_oval(10, 10, w-10, h-10)
+
+# kella keskpunkt
+tahvel.create_oval(w/2-5, h/2-5, w/2+5, h/2+5, fill="black")
+
+# sekundiosuti
+sek_id = tahvel.create_line(w/2, h/2, w/2, 20, fill="red")
+
+# minutiosuti
+min_id = tahvel.create_line(w/2, h/2, w/2, 40, fill="blue")
+
+# tunniosuti
+tun_id = tahvel.create_line(w/2, h/2, w/2, 60, fill="green")
+
+def uuenda():
+    # loeme jooksva kellaaja
+    aeg = time.localtime()
+
+    # osutite liikumise nurga arvutamine
+    sek_nurk = -pi/2 + aeg.tm_sec * (2*pi/60)
+    min_nurk = -pi/2 + aeg.tm_min * (2*pi/60)
+    tun_nurk = -pi/2 + (aeg.tm_hour % 12 + aeg.tm_min/60) * (2*pi/12)
+
+    # osutite uute koordinaatide arvutamine
+    r = min(w/2, h/2) - 20
+    sek_x = r*cos(sek_nurk)
+    sek_y = -r*sin(sek_nurk)
+    min_x = 0.8*r*cos(min_nurk)
+    min_y = -0.8*r*sin(min_nurk)
+    tun_x = 0.6*r*cos(tun_nurk)
+    tun_y = -0.6*r*sin(tun_nurk)
+
+    # osutite positsioonide uuendamine
+    tahvel.coords(sek_id, w/2, h/2, w/2 + sek_x, h/2 + sek_y)
+    tahvel.coords(min_id, w/2, h/2, w/2 + min_x, h/2 + min_y)
+    tahvel.coords(tun_id, w/2, h/2, w/2 + tun_x, h/2 + tun_y)
+
+    # ootame 1 sekund ja siis uuendame kella
+    raam.after(1000, uuenda)
+
+uuenda()
+tahvel.pack()
+raam.mainloop()
